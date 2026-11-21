@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#112d30">
+  <meta name="description" content="清和觀・知止籤：一支籤，不替你決定人生。來清和觀，向知止求一支原創心籤，留一句話給此刻的自己。">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="清和觀｜知止籤・線上求籤">
+  <meta property="og:description" content="九十九支原創心籤。心有所問，先求一籤。江問渠・知止的原創互動求籤體驗。">
+  <meta property="og:image" content="./assets/qinghe-logo.png">
+  <title>清和觀｜知止籤・線上求籤</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <div class="site-shell">
+    <header class="topbar">
+      <a class="wordmark" href="#top" aria-label="清和觀｜回到首頁"><img class="brand-image" src="./assets/qinghe-logo.png" width="88" height="88" alt="清和觀 LOGO" decoding="async"><span class="brand-name">知止心籤<small>QINGHE GUAN · 99 LOTS</small></span></a>
+      <div class="header-links"><label class="language-picker" for="language-select"><span class="sr-only">Language</span><select id="language-select" aria-label="Language"><option value="zh-Hant">繁體中文</option><option value="ja">日本語</option><option value="en">English</option></select></label><a id="nav-about" href="#about">關於此籤</a><a id="nav-character" class="link-character" href="https://jiang-wenqu-zhizhi.awf-shadows.chatgpt.site/" target="_blank" rel="noopener noreferrer">認識知止 <span aria-hidden="true">↗</span></a></div>
+    </header>
+    <main id="top">
+      <div class="ambient sun" aria-hidden="true"></div>
+      <section class="hero" aria-labelledby="main-title">
+        <div class="eyebrow"><span class="eyebrow-line"></span><span id="eyebrow-text">清和觀 · 線上心籤</span><span class="eyebrow-line"></span></div>
+        <h1 id="main-title"><span id="hero-title-top">心有所問，</span><br><em id="hero-title-bottom">不妨求一籤。</em></h1>
+        <p class="intro"><span id="intro-line-1">有些問題，未必急著找到答案。</span><br><span id="intro-line-2">先坐下，喝口茶，看看這支籤怎麼說。</span></p>
+        <p class="lot-count-note"><span id="lot-count-label">清和觀・原創九九籤</span> <span aria-hidden="true">✦</span> 99</p>
+        <div class="temple-scene" aria-hidden="true"><div class="moon"></div><div class="roof rear"></div><div class="roof front"></div><div class="temple-pillars"><i></i><i></i><i></i><i></i><i></i></div><div class="ground"></div></div>
+      </section>
+      <section class="ritual" id="ritual" aria-labelledby="ritual-title">
+        <div class="ritual-column"><div class="section-kicker">01 / 問心</div><h2 id="topic-title">想問哪方面的事？</h2><p class="section-desc"><span id="topic-desc-1">不用寫名字、生辰，也不需要交代任何隱私。</span><br><span id="topic-desc-2">想好一件事，便可以開始。</span></p>
+          <fieldset class="topics" id="topics"><legend class="sr-only">所問之事</legend>
+            <label><input type="radio" name="topic" value="感情" checked><span data-topic-index="0">感情</span></label>
+            <label><input type="radio" name="topic" value="人際"><span data-topic-index="1">人際</span></label>
+            <label><input type="radio" name="topic" value="事業"><span data-topic-index="2">事業</span></label>
+            <label><input type="radio" name="topic" value="抉擇"><span data-topic-index="3">抉擇</span></label>
+            <label><input type="radio" name="topic" value="家宅"><span data-topic-index="4">家宅</span></label>
+            <label><input type="radio" name="topic" value="隨緣"><span data-topic-index="5">隨緣</span></label>
+          </fieldset>
+          <label class="q-label" for="question"><span id="question-label-text">想默念的問題</span> <span id="question-optional">（可留白，不會送出或儲存）</span></label>
+          <textarea id="question" rows="2" maxlength="90" placeholder="把問題放在心裡，也很好。"></textarea>
+          <p class="privacy-line" id="privacy-line">此頁不連接伺服器，問題只留在你的瀏覽器畫面中。</p>
+        </div>
+        <div class="lot-column"><div class="section-kicker" id="draw-section-label">02 / 抽籤</div><div class="lot-stage" id="lot-stage" aria-hidden="true"><div class="lot-aura"></div><div class="sticks"><i style="--r:-24deg;--y:14px"></i><i style="--r:-18deg;--y:3px"></i><i style="--r:-11deg;--y:-5px"></i><i style="--r:-4deg;--y:-12px"></i><i style="--r:4deg;--y:-16px"></i><i style="--r:11deg;--y:-7px"></i><i style="--r:18deg;--y:1px"></i><i style="--r:25deg;--y:15px"></i></div><div class="lot-pot"><span>知<br>止</span></div><div class="stage-shadow"></div></div>
+          <p class="lot-caption" id="lot-caption">不問吉凶定生死，只問此刻如何行。</p><button id="draw-btn" class="primary-btn" type="button">恭請一支籤 <span aria-hidden="true">✦</span></button><p id="draw-hint" class="mini-hint" role="status" aria-live="polite">靜心片刻，按下即可抽籤。</p>
+        </div>
+      </section>
+      <section class="result-section" id="result-section" hidden aria-labelledby="result-title"><div class="divider-line"><span>✦</span></div><div class="section-kicker" id="interpret-label">03 / 解籤</div><h2 id="result-title">今日所得</h2><div class="result-layout"><article class="fortune-paper" id="fortune-paper"><div class="paper-filigree" aria-hidden="true">✧ ───── ✧</div><p class="result-number" id="result-number">第〇〇籤</p><h3 id="result-name"></h3><span class="result-grade" id="result-grade"></span><div class="poem" id="result-poem"></div><div class="ink-seal" aria-hidden="true">清和</div></article><div class="interpretation"><span class="result-topic" id="result-topic"></span><h3 id="meaning-title">此籤怎麼說</h3><p id="result-meaning"></p><h3 id="action-title">可以做的一件小事</h3><p id="result-action"></p><blockquote id="result-quote"></blockquote><div class="result-actions"><button class="primary-btn" id="save-btn" type="button">保存籤卡 PNG</button><button class="outline-btn" id="copy-btn" type="button">複製籤文</button><button class="outline-btn" id="ask-btn" type="button">複製給知止解籤</button><button class="text-btn" id="again-btn" type="button">換個問題，再求一籤 ↺</button></div><p class="mini-hint" id="result-note">籤卡與複製籤文不包含你輸入的私人問題。若選擇複製「給知止解籤」，則會一併附上你填寫的問題。</p></div></div></section>
+      <section class="about-section" id="about"><figure class="about-portrait"><img src="./assets/jiang-wenqu-editorial.png" width="1122" height="1402" loading="lazy" decoding="async" alt="知止道長江問渠，身著墨色竹紋外袍與米白立領襯衫，在清和觀書房的茶煙與陽光之間。"><figcaption>江問渠 <span>／</span> 道號・知止</figcaption></figure><div><div class="section-kicker" id="about-kicker">ABOUT / 一念之間</div><h2 id="about-title">「知止而後有定。」</h2><p id="about-p1">道號「知止」的江問渠，是清和觀主事，也是個會沏茶、解籤，偶爾講冷笑話的普通人。這裡的籤，是以他的故事世界觀創作的互動小品。</p><p id="about-p2">籤不是命令，也不能替任何人決定感情、健康、金錢或人生的去向。若要聊聊這支籤的意思，不如把籤文帶去問問他。</p><a id="about-cta" class="about-link" href="https://jiang-wenqu-zhizhi.awf-shadows.chatgpt.site/" target="_blank" rel="noopener noreferrer">前往《知止・人間有度》角色網站 <span aria-hidden="true">↗</span></a></div></section>
+    </main>
+    <footer class="footer"><p id="footer-line-1">清和觀 · 知止心籤 <span>／</span> 九十九支原創心籤 <span>／</span> 虛構世界觀互動作品</p><p id="footer-line-2">此為數位故事體驗，非實際宮觀抽籤或宗教科儀；請勿作為重大決策的唯一依據。</p><p class="easter" id="easter-note">產品需求友情提供：堂弟江昱誠　｜　「這應該不用寫 PRD 吧？」</p></footer>
+  </div><div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
