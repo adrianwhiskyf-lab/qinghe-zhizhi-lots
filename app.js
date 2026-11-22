@@ -6,8 +6,8 @@ const LANGS = ['zh-Hant','ja','en'];
 const UI = {
   'zh-Hant': {
     aboutLink:'關於此籤', characterLink:'認識知止', eyebrow:'清和觀 · 線上心籤',
-    titleTop:'心有所問，', titleBottom:'不妨求一籤。',
-    intro1:'有些問題，未必急著找到答案。',intro2:'先坐下，喝口茶，看看這支籤怎麼說。',
+    titleTop:'心有所問', titleBottom:'不妨求一籤',
+    intro1:'有些問題，未必急著找到答案',intro2:'先坐下，喝口茶，看看這支籤怎麼說',
     lotCount:'清和觀・原創九九籤',topicTitle:'想問哪方面的事？',
     topicDesc1:'不用寫名字、生辰，也不需要交代任何隱私。',topicDesc2:'想好一件事，便可以開始。',
     questionLabel:'想默念的問題',questionOptional:'（可留白，不會送出或儲存）',
@@ -95,6 +95,16 @@ let LOTS = TRANSLATION_DATA.lots.map(item => ({...item[language],id:item.id,cate
 
 const $ = id => document.getElementById(id);
 const drawBtn=$('draw-btn'),stage=$('lot-stage'),hint=$('draw-hint'),resultSection=$('result-section');
+const drawAudio = new Audio('./assets/lot.mp3');
+drawAudio.preload = 'auto';
+function playDrawSound(){
+  try {
+    drawAudio.pause();
+    drawAudio.currentTime = 0;
+    const playback = drawAudio.play();
+    if (playback && typeof playback.catch === 'function') playback.catch(() => {});
+  } catch (error) { /* Audio playback may be unavailable in restricted browsers. */ }
+}
 let current=null,toastTimer=null,isDrawing=false;
 const gradeColors={'上吉':'#986c39','吉':'#9d6c45','中吉':'#89765c','平':'#697b72','待時':'#6a7883'};
 const cnDigits=['〇','一','二','三','四','五','六','七','八','九'];
@@ -135,7 +145,7 @@ languageSelect.addEventListener('change',e=>setQingheLanguage(e.currentTarget.va
 languageSelect.addEventListener('input',e=>setQingheLanguage(e.currentTarget.value));
 applyLanguage();
 function showLot(lot,topic){$('result-number').textContent=lotNumber(lot.id);$('result-name').textContent=lot.name;$('result-grade').textContent=lot.grade;$('result-poem').replaceChildren(...lot.poem.map(line=>{const s=document.createElement('span');s.textContent=line;return s;}));$('result-meaning').textContent=lot.meaning;$('result-action').textContent=lot.action;$('result-quote').textContent=lot.quote;$('result-topic').textContent=`${UI[language].topicLabel} / ${translatedTopic(topic)}`;resultSection.hidden=false;setTimeout(()=>resultSection.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'}),70);}
-function drawLot(){if(isDrawing)return;isDrawing=true;drawBtn.disabled=true;drawBtn.textContent=UI[language].drawWait;hint.textContent=language==='zh-Hant'?'籤筒輕響，稍候片刻。':language==='ja'?'籤筒が静かに鳴っています。少々お待ちください。':'The lot筒 is gently rattling. One moment…';stage.classList.add('shaking');resultSection.hidden=true;
+function drawLot(){if(isDrawing)return;playDrawSound();isDrawing=true;drawBtn.disabled=true;drawBtn.textContent=UI[language].drawWait;hint.textContent=language==='zh-Hant'?'籤筒輕響，稍候片刻。':language==='ja'?'籤筒が静かに鳴っています。少々お待ちください。':'The lot筒 is gently rattling. One moment…';stage.classList.add('shaking');resultSection.hidden=true;
   // Avoid immediately repeating an identical slip in the same page session. No questions are stored.
   const excluded=current?.lot?.id;let index=randomIndex(LOTS.length);if(excluded!=null&&LOTS[index].id===excluded){index=(index+1+randomIndex(LOTS.length-1))%LOTS.length;}
   const lot=LOTS[index],topic=selectedTopic();
