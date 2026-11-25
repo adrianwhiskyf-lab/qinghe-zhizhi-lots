@@ -33,3 +33,10 @@
 .music-toggle.is-playing .music-off-mark{opacity:0}
 .music-toggle:focus-visible{outline:2px solid var(--gold2);outline-offset:4px}
 @media(max-width:620px){.music-toggle{width:36px;height:36px;flex-basis:36px}.music-toggle svg{width:23px;height:23px}}
+
+
+/* v2.4.2: robust geometric speaker control visibility and tap target. */
+.music-toggle{appearance:none;-webkit-appearance:none;position:relative;z-index:2;display:inline-grid!important;place-items:center;flex:0 0 40px;min-width:40px;min-height:40px;cursor:pointer;line-height:1;color:#f1d5a0}
+.music-toggle svg{display:block!important;width:24px!important;height:24px!important;overflow:visible}
+.music-toggle .music-off-mark{stroke:currentColor}
+@media(max-width:620px){.music-toggle{flex-basis:40px;min-width:40px;min-height:40px}.music-toggle svg{width:23px!important;height:23px!important}}

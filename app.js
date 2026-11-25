@@ -23,7 +23,7 @@ const UI = {
     aboutCta:'前往《知止・人間有度》角色網站',
     footer1:'清和觀 · 知止心籤 ／ 九十九支原創心籤 ／ 虛構世界觀互動作品',
     footer2:'此為數位故事體驗，非實際宮觀抽籤或宗教科儀；請勿作為重大決策的唯一依據。',
-    easter:'產品需求友情提供：堂弟江昱誠　｜　手碟音樂協力｜易星晗　｜　「這應該不用寫 PRD 吧？」',
+    easter:'手碟音樂協力　易星晗　｜　產品需求友情提供：堂弟江昱誠　「這應該不用寫 PRD 吧？」',
     musicPlay:'播放背景音樂',musicStop:'關閉背景音樂',musicFail:'背景音樂暫時無法播放',
     topicNames:['感情','人際','事業','抉擇','家宅','隨緣'],topicLabel:'所問之事',
     copied:'籤文已複製，可以分享了。',copyFail:'複製受瀏覽器限制，請使用 HTTPS 網站。',
@@ -48,7 +48,7 @@ const UI = {
     aboutCta:'《知止・人間有度》キャラクターサイトへ',
     footer1:'清和観 · 知止心籤 ／ オリジナル九九籤 ／ 架空世界観のインタラクティブ作品',
     footer2:'本作はデジタルストーリー体験であり、実際の寺観で行う籤占いや宗教儀式ではありません。重大な決断の唯一の根拠にしないでください。',
-    easter:'企画協力：従弟・江昱誠　｜　ハンドパン音楽協力｜易星晗　｜「これ、PRDいらないよね？」',
+    easter:'ハンドパン音楽協力　易星晗　｜　企画協力：従弟・江昱誠　「これ、PRDいらないよね？」',
     musicPlay:'BGMを再生',musicStop:'BGMを停止',musicFail:'BGMを再生できませんでした',
     topicNames:['恋愛','人間関係','仕事','選択','家庭','おまかせ'],topicLabel:'質問のテーマ',
     copied:'籤文をコピーしました。共有できます。',copyFail:'ブラウザの制限によりコピーできません。HTTPSサイトをご利用ください。',
@@ -74,7 +74,7 @@ const UI = {
     aboutCta:'Visit the Zhizhi · Human Bounds character site',
     footer1:'Qinghe Guan · Zhizhi Heart Lots / 99 Original Lots / Fictional Interactive Work',
     footer2:'This is a digital storytelling experience, not an actual temple divination or religious ceremony. Do not rely on it as the sole basis for major decisions.',
-    easter:'Product request kindly supplied by cousin Jiang Yucheng | Handpan music collaboration | Yi Xinghan | “Surely this doesn’t need a PRD?”',
+    easter:'Handpan music collaboration　Yi Xinghan　｜　Product request kindly supplied by cousin Jiang Yucheng　“Surely this doesn’t need a PRD?”',
     musicPlay:'Play background music',musicStop:'Turn off background music',musicFail:'Background music could not be played',
     topicNames:['Love','Relationships','Career','Decisions','Home','Open Question'],topicLabel:'Topic',
     copied:'Lot text copied. Ready to share.',copyFail:'Copying is restricted by your browser. Please use the HTTPS site.',
@@ -98,11 +98,19 @@ let LOTS = TRANSLATION_DATA.lots.map(item => ({...item[language],id:item.id,cate
 
 const $ = id => document.getElementById(id);
 const drawBtn=$('draw-btn'),stage=$('lot-stage'),hint=$('draw-hint'),resultSection=$('result-section');
-const drawAudio = new Audio('./assets/lot.mp3');
+// Resolve media relative to this script, not the current page URL. This also works when
+// the site is deployed below a repository/subdirectory path (for example GitHub Pages).
+const APP_SCRIPT_URL = document.currentScript && document.currentScript.src
+  ? document.currentScript.src
+  : window.location.href;
+const APP_ASSET_BASE = new URL('./assets/', APP_SCRIPT_URL);
+const assetUrl = filename => new URL(filename, APP_ASSET_BASE).href;
+
+const drawAudio = new Audio(assetUrl('lot.mp3'));
 drawAudio.preload = 'auto';
 
-// Optional background music: disabled by default and started only after a visitor taps the geometric control.
-const BGM_TRACKS = ['./assets/bgm-handpan.mp3', './assets/bgm-teahouse.mp3'];
+// Optional background music: disabled by default and started only after a visitor taps the speaker control.
+const BGM_TRACKS = [assetUrl('bgm-handpan.mp3'), assetUrl('bgm-teahouse.mp3')];
 const bgmAudio = new Audio();
 bgmAudio.preload = 'none';
 bgmAudio.volume = 0.24;
@@ -125,7 +133,9 @@ function nextBgmIndex(){
   lastBgmIndex = index;
   return index;
 }
-function handleBgmFailure(){
+function handleBgmFailure(error){
+  console.warn('[清和觀 BGM] 背景音樂播放失敗', error || bgmAudio.error || 'unknown error');
+  if(!bgmEnabled) return;
   bgmEnabled = false;
   bgmAudio.pause();
   updateMusicToggle();
@@ -133,12 +143,14 @@ function handleBgmFailure(){
 }
 function playRandomBgm(){
   if(!bgmEnabled) return;
+  // Changing src resets the playback position automatically; avoid setting currentTime before metadata loads.
+  bgmAudio.pause();
   bgmAudio.src = BGM_TRACKS[nextBgmIndex()];
-  bgmAudio.currentTime = 0;
   const playback = bgmAudio.play();
   if(playback && typeof playback.catch === 'function') playback.catch(handleBgmFailure);
 }
 bgmAudio.addEventListener('ended', () => { if(bgmEnabled) playRandomBgm(); });
+bgmAudio.addEventListener('error', () => handleBgmFailure(bgmAudio.error));
 if(musicToggle){
   musicToggle.addEventListener('click', () => {
     if(bgmEnabled){
@@ -149,7 +161,8 @@ if(musicToggle){
     }
     bgmEnabled = true;
     updateMusicToggle();
-    if(bgmAudio.src && bgmAudio.currentTime > 0 && !bgmAudio.ended){
+    // Resume a paused track when possible; otherwise choose one of the two tracks at random.
+    if(bgmAudio.currentSrc && !bgmAudio.ended && !bgmAudio.error){
       const playback = bgmAudio.play();
       if(playback && typeof playback.catch === 'function') playback.catch(handleBgmFailure);
     } else playRandomBgm();
