@@ -9,11 +9,11 @@ const UI = {
     titleTop:'心有所問', titleBottom:'不妨求一籤',
     intro1:'有些問題，未必急著找到答案',intro2:'先坐下，喝口茶，看看這支籤怎麼說',
     lotCount:'清和觀・原創九九籤',topicTitle:'想問哪方面的事？',
-    topicDesc1:'不用寫名字、生辰，也不需要交代任何隱私。',topicDesc2:'想好一件事，便可以開始。',
+    topicDesc1:'不用寫名字、生辰，也不需要交代任何隱私',topicDesc2:'想好一件事，便可以開始',
     questionLabel:'想默念的問題',questionOptional:'（可留白，不會送出或儲存）',
     placeholder:'把問題放在心裡，也很好。',privacy:'此頁不連接伺服器，問題只留在你的瀏覽器畫面中。',
-    drawSection:'02 / 抽籤',draw:'恭請一支籤',drawWait:'聽一聽籤筒的聲音⋯⋯',drawHint:'靜心片刻，按下即可抽籤。',
-    lotCaption:'不問吉凶定生死，只問此刻如何行。',interpret:'03 / 解籤',resultTitle:'今日所得',
+    drawSection:'02 / 抽籤',draw:'恭請一支籤',drawWait:'聽一聽籤筒的聲音⋯⋯',drawHint:'靜心片刻，按下即可抽籤',
+    lotCaption:'不問吉凶定生死，只問此刻如何行',interpret:'03 / 解籤',resultTitle:'今日所得',
     meaningTitle:'此籤怎麼說',actionTitle:'可以做的一件小事',save:'保存籤卡 PNG',copy:'複製籤文',
     ask:'複製給知止解籤',again:'換個問題，再求一籤 ↺',
     note:'籤卡與複製籤文不包含你輸入的私人問題。若選擇複製「給知止解籤」，則會一併附上你填寫的問題。',
@@ -23,7 +23,8 @@ const UI = {
     aboutCta:'前往《知止・人間有度》角色網站',
     footer1:'清和觀 · 知止心籤 ／ 九十九支原創心籤 ／ 虛構世界觀互動作品',
     footer2:'此為數位故事體驗，非實際宮觀抽籤或宗教科儀；請勿作為重大決策的唯一依據。',
-    easter:'產品需求友情提供：堂弟江昱誠　｜　「這應該不用寫 PRD 吧？」',
+    easter:'產品需求友情提供：堂弟江昱誠　｜　手碟音樂協力｜易星晗　｜　「這應該不用寫 PRD 吧？」',
+    musicPlay:'播放背景音樂',musicStop:'關閉背景音樂',musicFail:'背景音樂暫時無法播放',
     topicNames:['感情','人際','事業','抉擇','家宅','隨緣'],topicLabel:'所問之事',
     copied:'籤文已複製，可以分享了。',copyFail:'複製受瀏覽器限制，請使用 HTTPS 網站。',
     askCopied:'已複製給知止的提問，可貼到聊天室。',drawDone:'籤已出，請慢慢讀。',drawAgain:'再恭請一支籤'
@@ -47,7 +48,8 @@ const UI = {
     aboutCta:'《知止・人間有度》キャラクターサイトへ',
     footer1:'清和観 · 知止心籤 ／ オリジナル九九籤 ／ 架空世界観のインタラクティブ作品',
     footer2:'本作はデジタルストーリー体験であり、実際の寺観で行う籤占いや宗教儀式ではありません。重大な決断の唯一の根拠にしないでください。',
-    easter:'企画協力：従弟・江昱誠　｜「これ、PRDいらないよね？」',
+    easter:'企画協力：従弟・江昱誠　｜　ハンドパン音楽協力｜易星晗　｜「これ、PRDいらないよね？」',
+    musicPlay:'BGMを再生',musicStop:'BGMを停止',musicFail:'BGMを再生できませんでした',
     topicNames:['恋愛','人間関係','仕事','選択','家庭','おまかせ'],topicLabel:'質問のテーマ',
     copied:'籤文をコピーしました。共有できます。',copyFail:'ブラウザの制限によりコピーできません。HTTPSサイトをご利用ください。',
     askCopied:'知止道長への質問をコピーしました。チャットに貼り付けてください。',drawDone:'籤が出ました。ゆっくりお読みください。',drawAgain:'もう一籤を引く'
@@ -72,7 +74,8 @@ const UI = {
     aboutCta:'Visit the Zhizhi · Human Bounds character site',
     footer1:'Qinghe Guan · Zhizhi Heart Lots / 99 Original Lots / Fictional Interactive Work',
     footer2:'This is a digital storytelling experience, not an actual temple divination or religious ceremony. Do not rely on it as the sole basis for major decisions.',
-    easter:'Product request kindly supplied by cousin Jiang Yucheng | “Surely this doesn’t need a PRD?”',
+    easter:'Product request kindly supplied by cousin Jiang Yucheng | Handpan music collaboration | Yi Xinghan | “Surely this doesn’t need a PRD?”',
+    musicPlay:'Play background music',musicStop:'Turn off background music',musicFail:'Background music could not be played',
     topicNames:['Love','Relationships','Career','Decisions','Home','Open Question'],topicLabel:'Topic',
     copied:'Lot text copied. Ready to share.',copyFail:'Copying is restricted by your browser. Please use the HTTPS site.',
     askCopied:'Your question for Zhizhi has been copied. Paste it into the chat.',drawDone:'Your lot is ready. Take your time reading it.',drawAgain:'Draw Another Lot'
@@ -97,6 +100,61 @@ const $ = id => document.getElementById(id);
 const drawBtn=$('draw-btn'),stage=$('lot-stage'),hint=$('draw-hint'),resultSection=$('result-section');
 const drawAudio = new Audio('./assets/lot.mp3');
 drawAudio.preload = 'auto';
+
+// Optional background music: disabled by default and started only after a visitor taps the geometric control.
+const BGM_TRACKS = ['./assets/bgm-handpan.mp3', './assets/bgm-teahouse.mp3'];
+const bgmAudio = new Audio();
+bgmAudio.preload = 'none';
+bgmAudio.volume = 0.24;
+let bgmEnabled = false;
+let lastBgmIndex = -1;
+const musicToggle = $('music-toggle');
+function updateMusicToggle(){
+  if(!musicToggle) return;
+  const label = bgmEnabled ? UI[language].musicStop : UI[language].musicPlay;
+  musicToggle.setAttribute('aria-label', label);
+  musicToggle.setAttribute('title', label);
+  musicToggle.setAttribute('aria-pressed', String(bgmEnabled));
+  musicToggle.classList.toggle('is-playing', bgmEnabled);
+  const srLabel = $('music-toggle-label');
+  if(srLabel) srLabel.textContent = label;
+}
+function nextBgmIndex(){
+  let index = randomIndex(BGM_TRACKS.length);
+  if(BGM_TRACKS.length > 1 && index === lastBgmIndex) index = (index + 1 + randomIndex(BGM_TRACKS.length - 1)) % BGM_TRACKS.length;
+  lastBgmIndex = index;
+  return index;
+}
+function handleBgmFailure(){
+  bgmEnabled = false;
+  bgmAudio.pause();
+  updateMusicToggle();
+  toast(UI[language].musicFail);
+}
+function playRandomBgm(){
+  if(!bgmEnabled) return;
+  bgmAudio.src = BGM_TRACKS[nextBgmIndex()];
+  bgmAudio.currentTime = 0;
+  const playback = bgmAudio.play();
+  if(playback && typeof playback.catch === 'function') playback.catch(handleBgmFailure);
+}
+bgmAudio.addEventListener('ended', () => { if(bgmEnabled) playRandomBgm(); });
+if(musicToggle){
+  musicToggle.addEventListener('click', () => {
+    if(bgmEnabled){
+      bgmEnabled = false;
+      bgmAudio.pause();
+      updateMusicToggle();
+      return;
+    }
+    bgmEnabled = true;
+    updateMusicToggle();
+    if(bgmAudio.src && bgmAudio.currentTime > 0 && !bgmAudio.ended){
+      const playback = bgmAudio.play();
+      if(playback && typeof playback.catch === 'function') playback.catch(handleBgmFailure);
+    } else playRandomBgm();
+  });
+}
 function playDrawSound(){
   try {
     drawAudio.pause();
@@ -126,7 +184,7 @@ function applyLanguage(){
   set('interpret-label',u.interpret);set('result-title',u.resultTitle);set('meaning-title',u.meaningTitle);set('action-title',u.actionTitle);
   set('save-btn',u.save);set('copy-btn',u.copy);set('ask-btn',u.ask);set('again-btn',u.again);set('result-note',u.note);
   set('about-kicker',u.aboutKicker);set('about-title',u.aboutTitle);set('about-p1',u.aboutP1);set('about-p2',u.aboutP2);set('about-cta',u.aboutCta);
-  set('footer-line-1',u.footer1);set('footer-line-2',u.footer2);set('easter-note',u.easter);set('draw-hint',u.drawHint);document.title=language==='zh-Hant'?'清和觀｜知止籤・線上求籤':language==='ja'?'清和観｜知止籤・オンライン籤占い':'Qinghe Guan | Zhizhi Heart Lots';
+  set('footer-line-1',u.footer1);set('footer-line-2',u.footer2);set('easter-note',u.easter);set('draw-hint',u.drawHint);updateMusicToggle();document.title=language==='zh-Hant'?'清和觀｜知止籤・線上求籤':language==='ja'?'清和観｜知止籤・オンライン籤占い':'Qinghe Guan | Zhizhi Heart Lots';
   document.querySelectorAll('[data-topic-index]').forEach(el=>el.textContent=u.topicNames[Number(el.dataset.topicIndex)]);
   if(current){const id=current.lot.id;current.lot={...TRANSLATION_DATA.lots[id-1][language],id};showLot(current.lot,current.topic);}
 }

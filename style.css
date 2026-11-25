@@ -22,3 +22,14 @@
 .language-picker select:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 .language-picker option{background:#10292d;color:#f6eddb}
 @media(max-width:620px){.topbar{padding:16px 18px;gap:12px}.header-links{gap:10px;flex-wrap:wrap;justify-content:flex-end}.language-picker select{padding:8px 22px 8px 8px;font-size:11px}.wordmark{gap:9px;font-size:16px}.brand-image{width:58px;height:58px}}
+
+
+/* Optional ambient music toggle: geometric line-art speaker icon. */
+.music-toggle{display:grid;place-items:center;width:40px;height:40px;flex:0 0 40px;padding:0;border:1px solid var(--line);background:rgba(2,19,21,.18);color:rgba(241,213,160,.68);opacity:.82;transition:color .2s,border-color .2s,background .2s,opacity .2s,box-shadow .2s}
+.music-toggle svg{display:block;width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:1.15;stroke-linecap:round;stroke-linejoin:round}
+.music-toggle .music-off-mark{stroke-width:1.5;opacity:.9;transition:opacity .2s}
+.music-toggle:hover{opacity:1;color:var(--gold2);border-color:var(--gold)}
+.music-toggle.is-playing{opacity:1;color:var(--gold2);border-color:rgba(241,213,160,.72);background:rgba(194,156,103,.09);box-shadow:0 0 0 3px rgba(194,156,103,.07)}
+.music-toggle.is-playing .music-off-mark{opacity:0}
+.music-toggle:focus-visible{outline:2px solid var(--gold2);outline-offset:4px}
+@media(max-width:620px){.music-toggle{width:36px;height:36px;flex-basis:36px}.music-toggle svg{width:23px;height:23px}}
